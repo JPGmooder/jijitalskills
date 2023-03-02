@@ -28,16 +28,29 @@ namespace sessionone
         public String exitFormatedTime { get => ExitTime?.TimeOfDay.ToString().Substring(0, 5); }
         public String dateFormated { get => EnterTime.Date.ToString("d"); }
 
-        public String timeSpend { get { var duration = TimeSpan.FromTicks(ExitTime?.Subtract(EnterTime).Ticks ?? 0).Duration(); 
-            if (duration.TotalSeconds == 0)
+        public String timeSpend { get { 
+            if (timeSpendDuration.TotalSeconds == 0)
                 {
                     return "";
                 }
             else
                 {
-                    return duration.ToString().Substring(3, 5);
+                    return timeSpendDuration.ToString().Substring(0, 5);
                 }
             }  }
+
+        public TimeSpan timeSpendDuration
+        {
+            get
+            {
+                var duration = TimeSpan.FromTicks(ExitTime?.Subtract(EnterTime).Ticks ?? 0).Duration();
+               
+                    return duration;
+                
+            }
+        }
+
+
 
         public String code { get => ExitCauses == null ? "White" : "Red"; }
 

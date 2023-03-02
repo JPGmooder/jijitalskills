@@ -42,11 +42,16 @@ namespace sessionone
             }
             _dataBase.TrafficViewer.Add(currentTraffic);
             _dataBase.SaveChangesAsync();
-            initTimer();
+            double spendedSeconds = 0;
+            foreach(var errorEvent in loadedEvents.Where((element) => DateTime.Now.Subtract(element.EnterTime.Date).Days <= 30))
+            {
+                spendedSeconds += errorEvent.timeSpendDuration.TotalSeconds;
+            }
+            initTimer((int)spendedSeconds);
             Closing += OnWindowClosing;
             logGrid.ItemsSource = loadedEvents;
         }
-        private void initTimer()
+        private void initTimer(int startTime)
         {
             _time = TimeSpan.FromSeconds(0);
             tickTextBlock.Text = "Time spent on system: "  + _time.ToString("c");
